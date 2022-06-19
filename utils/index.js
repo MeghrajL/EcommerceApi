@@ -1,3 +1,3 @@
 import { createJWT, isTokenValid, attachCookiesToResponse } from "./jwt.js";
-
-export { createJWT, isTokenValid, attachCookiesToResponse };
+import createTokenUser from "./createTokenUser.js";
+export { createJWT, isTokenValid, attachCookiesToResponse, createTokenUser };
