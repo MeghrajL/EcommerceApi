@@ -1,15 +1,15 @@
 import { Router } from "express";
 import {
+  authenticateUser,
+  authorizePermissions,
+} from "../middleware/authentication.js";
+import {
   getAllUsers,
   getSingleUser,
   showCurrentUser,
   updateUser,
   updateUserPassword,
 } from "../controllers/userController.js";
-import {
-  authenticateUser,
-  authorizePermissions,
-} from "../middleware/authentication.js";
 
 const route = Router();
 
