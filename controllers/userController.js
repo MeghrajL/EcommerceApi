@@ -1,7 +1,11 @@
 import User from "../models/User.js";
 import { StatusCodes } from "http-status-codes";
 import CustomError from "../errors/index.js";
-import { attachCookiesToResponse, createTokenUser } from "../utils/index.js";
+import {
+  attachCookiesToResponse,
+  createTokenUser,
+  checkPermissions,
+} from "../utils/index.js";
 import "express-async-errors";
 
 const getAllUsers = async (req, res) => {
@@ -15,6 +19,7 @@ const getSingleUser = async (req, res) => {
   if (!user) {
     throw new CustomError.NotFoundError(`No User with id : ${req.params.id} `);
   }
+  checkPermissions(req.user, user._id);
   res.status(StatusCodes.OK).json({ user });
 };
 
@@ -29,11 +34,20 @@ const updateUser = async (req, res) => {
     throw new CustomError.BadRequestError("Please enter email and name");
   }
 
+  //updating user with save method
+  const user = await User.findOne({ _id: req.user.userId });
+  user.name = name;
+  user.email = email;
+  await user.save();
+
+  //updating user with save findOneAndUpdate
+  /* 
   const user = await User.findOneAndUpdate(
     { _id: req.user.userId },
     { email, name },
     { new: true, runValidators: true }
-  );
+  );*/
+
   const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
   res.status(StatusCodes.OK).json({ user: tokenUser });

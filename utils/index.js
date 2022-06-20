@@ -1,3 +1,10 @@
 import { createJWT, isTokenValid, attachCookiesToResponse } from "./jwt.js";
 import createTokenUser from "./createTokenUser.js";
-export { createJWT, isTokenValid, attachCookiesToResponse, createTokenUser };
+import checkPermissions from "./checkPermissions.js";
+export {
+  createJWT,
+  isTokenValid,
+  attachCookiesToResponse,
+  createTokenUser,
+  checkPermissions,
+};
