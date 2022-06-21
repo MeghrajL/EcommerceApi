@@ -19,7 +19,8 @@ const getAllProducts = async (req, res) => {
 
 const getSingleProduct = async (req, res) => {
   const productId = req.params.id;
-  const product = await Product.findOne({ _id: productId });
+  const product = await Product.findOne({ _id: productId }).populate("reviews");
+  //populate("reviews"); is the mongo virtual here but querying is not availbale on virtual so we set up different(getSingleProductReviews) route for getting product specific reviews
 
   if (!product) {
     throw new CustomError.NotFoundError(`No Product with id : ${productId}`);
@@ -50,7 +51,7 @@ const deleteProduct = async (req, res) => {
   if (!product) {
     throw new CustomError.NotFoundError(`No Product with id : ${productId}`);
   }
-  await product.remove();
+  await product.remove(); //deletes product and also triggers pre func in product model to delete all reviews before deleting the product
 
   res.status(StatusCodes.OK).json({ msg: "Product Removed Successfully" });
 };

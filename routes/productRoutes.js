@@ -13,6 +13,8 @@ import {
   uploadImage,
 } from "../controllers/productController.js";
 
+import { getSingleProductReviews } from "../controllers/reviewController.js";
+
 const route = Router();
 
 route.get("/", getAllProducts);
@@ -41,5 +43,7 @@ route.delete(
   [authenticateUser, authorizePermissions("admin")],
   deleteProduct
 );
+
+route.get("/:id/reviews", getSingleProductReviews);
 
 export default route;
